@@ -51,6 +51,7 @@
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EA45874A1B41936600C1F4C3 /* UICollectionViewDataSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4587491B41936600C1F4C3 /* UICollectionViewDataSourceTests.swift */; };
 		EA4BFACD1B41722D00DFA736 /* UINavigationItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4BFACC1B41722D00DFA736 /* UINavigationItemTests.swift */; };
+		EA72C6EE1B41F61B0014D7D5 /* Bond+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B32C1B41B1ED00995CE9 /* Bond+CoreData.swift */; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EAD8B2FB1B41B04500995CE9 /* Bond+NSButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B2DF1B41B04500995CE9 /* Bond+NSButton.swift */; };
 		EAD8B2FD1B41B04500995CE9 /* Bond+NSColorWell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B2E01B41B04500995CE9 /* Bond+NSColorWell.swift */; };
@@ -751,6 +752,7 @@
 				EAD8B3031B41B04500995CE9 /* Bond+NSMenuItem.swift in Sources */,
 				EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */,
 				EAD8B2FF1B41B04500995CE9 /* Bond+NSControl.swift in Sources */,
+				EA72C6EE1B41F61B0014D7D5 /* Bond+CoreData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
