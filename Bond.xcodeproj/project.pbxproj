@@ -79,6 +79,7 @@
 		EAD8B3261B41B04500995CE9 /* Bond+UITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B2F71B41B04500995CE9 /* Bond+UITextField.swift */; };
 		EAD8B3281B41B04500995CE9 /* Bond+UITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B2F81B41B04500995CE9 /* Bond+UITextView.swift */; };
 		EAD8B32A1B41B04500995CE9 /* Bond+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B2F91B41B04500995CE9 /* Bond+UIView.swift */; };
+		EAD8B32D1B41B1ED00995CE9 /* Bond+CoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD8B32C1B41B1ED00995CE9 /* Bond+CoreData.swift */; };
 		EC0388991B0DD25700E32454 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 69491BAE1A7C217100A13B6B /* Bond.framework */; };
 		EC048D181AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
 		EC048D191AA238AF00E9794C /* Bond+Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC048D171AA238AF00E9794C /* Bond+Operators.swift */; };
@@ -197,6 +198,7 @@
 		EAD8B2F71B41B04500995CE9 /* Bond+UITextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UITextField.swift"; sourceTree = "<group>"; };
 		EAD8B2F81B41B04500995CE9 /* Bond+UITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UITextView.swift"; sourceTree = "<group>"; };
 		EAD8B2F91B41B04500995CE9 /* Bond+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+UIView.swift"; sourceTree = "<group>"; };
+		EAD8B32C1B41B1ED00995CE9 /* Bond+CoreData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+CoreData.swift"; sourceTree = "<group>"; };
 		EC048D141AA2386A00E9794C /* Bond+Functional.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Functional.swift"; sourceTree = "<group>"; };
 		EC048D171AA238AF00E9794C /* Bond+Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bond+Operators.swift"; sourceTree = "<group>"; };
 		EC6A5A841AB31954006071B6 /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
@@ -344,6 +346,7 @@
 				69491BCC1A7C21B600A13B6B /* Bond+Foundation.swift */,
 				EC048D141AA2386A00E9794C /* Bond+Functional.swift */,
 				EC048D171AA238AF00E9794C /* Bond+Operators.swift */,
+				EAD8B32C1B41B1ED00995CE9 /* Bond+CoreData.swift */,
 				EAD8B2E71B41B04500995CE9 /* Shared */,
 				EAD8B2DE1B41B04500995CE9 /* OSX */,
 				EAD8B2EA1B41B04500995CE9 /* iOS */,
@@ -677,6 +680,7 @@
 				EAD8B31E1B41B04500995CE9 /* Bond+UIProgressView.swift in Sources */,
 				EAD8B30C1B41B04500995CE9 /* Bond+NSLayoutConstraint.swift in Sources */,
 				69491BCF1A7C21B600A13B6B /* Bond+Arrays.swift in Sources */,
+				EAD8B32D1B41B1ED00995CE9 /* Bond+CoreData.swift in Sources */,
 				EAD8B31C1B41B04500995CE9 /* Bond+UINavigationItem.swift in Sources */,
 				EAD8B30E1B41B04500995CE9 /* Bond+UIActivityIndicatorView.swift in Sources */,
 				EAD8B3261B41B04500995CE9 /* Bond+UITextField.swift in Sources */,
