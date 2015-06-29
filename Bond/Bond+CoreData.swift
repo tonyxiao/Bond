@@ -25,126 +25,169 @@
 //  THE SOFTWARE.
 //
 
+#if os(iOS)
+
 import Foundation
 import CoreData
 
-private var sectionsDynamicHandleNSFetchedResultsController: UInt8 = 0;
-private var countDynamicHandleNSFetchedResultsController: UInt8 = 0;
-private var delegateDynamicHandleNSFetchedResultsController: UInt8 = 0;
-
 extension NSFetchedResultsController {
-    
-    public var dynSections: DynamicArray<DynamicArray<NSManagedObject>> {
-        if let d: AnyObject = objc_getAssociatedObject(self, &sectionsDynamicHandleNSFetchedResultsController) {
-            return (d as? DynamicArray<DynamicArray<NSManagedObject>>)!
-        } else {
-            var error: NSError?
-            if !performFetch(&error) {
-                fatalError("Unable to perform fetch for request \(fetchRequest)")
-            }
-            let d = DynamicArray(sections!.map {
-                DynamicArray(($0 as! NSFetchedResultsSectionInfo).objects.map { $0 as! NSManagedObject })
-                })
-            dynDelegate.sections = d
-            if dynDelegate.nextDelegate == nil {
-                dynDelegate.nextDelegate = delegate
-            }
-            delegate = dynDelegate
-            objc_setAssociatedObject(self, &sectionsDynamicHandleNSFetchedResultsController, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-            return d
-        }
+  public func results<T : NSManagedObject>(type: T.Type, loadData: Bool = true) -> FetchedResultsArray<T> {
+    return FetchedResultsArray(frc: self, type: type, loadData: loadData)
+  }
+}
+
+public class FetchedResultsArray<T> : DynamicArray<T> {
+  
+  let frcDelegate = FetchedResultsControllerDynamicDelegate()
+  var frc: NSFetchedResultsController
+  
+  public init(frc: NSFetchedResultsController, type: T.Type, loadData: Bool = true) {
+    self.frc = frc
+    super.init(Array<T>())
+    frcDelegate.dispatcher = self
+    if loadData {
+      reloadData()
     }
-    
-    public var dynCount: Dynamic<Int> {
-        if let d: AnyObject = objc_getAssociatedObject(self, &countDynamicHandleNSFetchedResultsController) {
-            return (d as? Dynamic<Int>)!
-        } else {
-            var error: NSError?
-            if !performFetch(&error) {
-                fatalError("Unable to perform fetch for request \(fetchRequest)")
-            }
-            let d = Dynamic<Int>(0)
-            dynDelegate.count = d
-            if dynDelegate.nextDelegate == nil {
-                dynDelegate.nextDelegate = delegate
-            }
-            delegate = dynDelegate
-            objc_setAssociatedObject(self, &countDynamicHandleNSFetchedResultsController, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-            return d
-        }
+  }
+  
+  public func reloadData() {
+    if frc.fetchedObjects == nil {
+      frcDelegate.nextDelegate = frc.delegate
+      frc.delegate = frcDelegate
+      var error: NSError?
+      dispatchWillReset()
+      if !frc.performFetch(&error) {
+        println("***** Error fetching \(frc.fetchRequest) \(error) *****")
+      }
+      dispatchDidReset()
+    } else {
+      // TODO: no-op for now, consider niling out frc and refetch completely
     }
-    
-    public var nextDelegate: NSFetchedResultsControllerDelegate? {
-        get { return dynDelegate.nextDelegate }
-        set { dynDelegate.nextDelegate = newValue }
+  }
+  
+  // For some reason this private helper is needed to avoid crash
+  private func objects() -> [T] {
+    if let objects = frc.fetchedObjects {
+      return objects.map { $0 as! T }
     }
-    
-    var dynDelegate: FetchedResultsControllerDynamicDelegate {
-        if let d: AnyObject = objc_getAssociatedObject(self, &delegateDynamicHandleNSFetchedResultsController) {
-            return (d as? FetchedResultsControllerDynamicDelegate)!
-        } else {
-            let d = FetchedResultsControllerDynamicDelegate()
-            objc_setAssociatedObject(self, &delegateDynamicHandleNSFetchedResultsController, d, objc_AssociationPolicy(OBJC_ASSOCIATION_RETAIN_NONATOMIC))
-            return d
-        }
-    }
+    return []
+  }
+  
+  override public var value: [T] {
+    get { return objects() }
+    set(newValue) { fatalError("Modifying fetched results array is not supported!") }
+  }
+  
+  override public var count: Int {
+    return frc.fetchedObjects?.count ?? 0
+  }
+  
+  override public subscript(index: Int) -> T {
+    get { return objects()[index] }
+    set { fatalError("Modifying fetched results array is not supported!") }
+  }
+  
+  override public func setArray(newValue: [T]) {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+  
+  override public func append(newElement: T) {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+  
+  override public func append(array: Array<T>) {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+  
+  override public func removeLast() -> T {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+  
+  override public func insert(newElement: T, atIndex i: Int) {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+  
+  override public func splice(array: Array<T>, atIndex i: Int) {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+  
+  override public func removeAtIndex(index: Int) -> T {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+  
+  override public func removeAll(keepCapacity: Bool) {
+    fatalError("Modifying fetched results array is not supported!")
+  }
+}
+
+extension FetchedResultsArray : FetchedResultsDispatcher {
+  func dispatchDidChangeCount(newCount: Int) {
+    dynCount.value = newCount
+  }
+}
+
+protocol FetchedResultsDispatcher : class {
+  func dispatchWillInsert(indices: [Int])
+  func dispatchDidInsert(indices: [Int])
+  func dispatchWillRemove(indices: [Int])
+  func dispatchDidRemove(indices: [Int])
+  func dispatchWillUpdate(indices: [Int])
+  func dispatchDidUpdate(indices: [Int])
+  func dispatchWillPerformBatchUpdates()
+  func dispatchDidPerformBatchUpdates()
+  func dispatchDidChangeCount(newCount: Int)
 }
 
 @objc class FetchedResultsControllerDynamicDelegate : NSObject {
-    weak var sections: DynamicArray<DynamicArray<NSManagedObject>>?
-    weak var count: Dynamic<Int>?
-    @objc weak var nextDelegate: NSFetchedResultsControllerDelegate?
+  weak var dispatcher: FetchedResultsDispatcher?
+  @objc weak var nextDelegate: NSFetchedResultsControllerDelegate?
 }
 
 extension FetchedResultsControllerDynamicDelegate : NSFetchedResultsControllerDelegate {
-    
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        assert(NSThread.isMainThread(), "Should only happen on main thread")
-        switch type {
-        case .Insert:
-            println("\(unsafeAddressOf(self)) Will insert object \(anObject.objectID) at index \(newIndexPath)")
-//            sections?[newIndexPath!.section].insert(anObject as! NSManagedObject, atIndex: newIndexPath!.row)
-        case .Delete:
-            println("\(unsafeAddressOf(self)) Will delete object \(anObject.objectID) at index \(indexPath)")
-//            sections?[indexPath!.section].removeAtIndex(indexPath!.row)
-        case .Update:
-            println("\(unsafeAddressOf(self)) Will update object \(anObject.objectID) at index \(indexPath)")
-//            sections?[indexPath!.section][indexPath!.row] = anObject as! NSManagedObject
-        case .Move:
-            println("\(unsafeAddressOf(self)) Will move object \(anObject.objectID) from \(indexPath) to \(newIndexPath)")
-//            sections?[indexPath!.section].removeAtIndex(indexPath!.row)
-//            sections?[newIndexPath!.section].insert(anObject as! NSManagedObject, atIndex: newIndexPath!.row)
-        }
+  
+  func controller(controller: NSFetchedResultsController, didChangeObject anObject: AnyObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
+    assert(NSThread.isMainThread(), "Should only happen on main thread")
+    switch type {
+    case .Insert:
+      dispatcher?.dispatchWillInsert([newIndexPath!.row])
+      dispatcher?.dispatchDidInsert([newIndexPath!.row])
+    case .Delete:
+      dispatcher?.dispatchWillRemove([indexPath!.row])
+      dispatcher?.dispatchDidRemove([indexPath!.row])
+    case .Update:
+      dispatcher?.dispatchWillUpdate([indexPath!.row])
+      dispatcher?.dispatchDidUpdate([indexPath!.row])
+    case .Move:
+      // TODO: Native move implementation?
+      dispatcher?.dispatchWillRemove([indexPath!.row])
+      dispatcher?.dispatchWillInsert([newIndexPath!.row])
+      dispatcher?.dispatchDidInsert([newIndexPath!.row])
+      dispatcher?.dispatchDidRemove([indexPath!.row])
     }
-    
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        assert(NSThread.isMainThread(), "Should only happen on main thread")
-        switch type {
-        case .Insert:
-            sections?.insert(DynamicArray([]), atIndex: sectionIndex)
-        case .Delete:
-            sections?.removeAtIndex(sectionIndex)
-        default:
-            fatalError("Received impossible NSFetchedResultsChangeType \(type)")
-        }
+    nextDelegate?.controller?(controller, didChangeObject: anObject, atIndexPath: indexPath, forChangeType: type, newIndexPath: newIndexPath)
+  }
+  
+  func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
+    fatalError("Fetched Results with sections is not yet supported. Please add pull request :)")
+  }
+  
+  func controllerWillChangeContent(controller: NSFetchedResultsController) {
+    dispatcher?.dispatchWillPerformBatchUpdates()
+    nextDelegate?.controllerWillChangeContent?(controller)
+  }
+  
+  func controller(controller: NSFetchedResultsController, sectionIndexTitleForSectionName sectionName: String?) -> String? {
+    return nextDelegate?.controller?(controller, sectionIndexTitleForSectionName: sectionName)
+  }
+  
+  func controllerDidChangeContent(controller: NSFetchedResultsController) {
+    assert(NSThread.isMainThread(), "Has to run on main")
+    dispatcher?.dispatchDidChangeCount(controller.fetchedObjects?.count ?? 0)
+    dispatcher?.dispatchDidPerformBatchUpdates()
+    nextDelegate?.controllerDidChangeContent?(controller)
+    for (index, object) in enumerate(controller.fetchedObjects!) {
     }
-    
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        println("Controller will change content")
-        nextDelegate?.controllerWillChangeContent?(controller)
-    }
-    
-    func controller(controller: NSFetchedResultsController, sectionIndexTitleForSectionName sectionName: String?) -> String? {
-        return nextDelegate?.controller?(controller, sectionIndexTitleForSectionName: sectionName)
-    }
-    
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        assert(NSThread.isMainThread(), "Has to run on main")
-        count?.value = controller.fetchedObjects?.count ?? 0
-        nextDelegate?.controllerDidChangeContent?(controller)
-        for (index, object) in enumerate(controller.fetchedObjects!) {
-            println("\(index): \((object as! NSManagedObject).objectID)")
-        }
-        println("Controller did change content")
-    }
+  }
 }
+
+#endif
