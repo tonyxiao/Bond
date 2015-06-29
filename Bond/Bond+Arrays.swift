@@ -79,7 +79,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
   public override init(_ v: Array<T>) {
     dynCount = Dynamic(0)
     super.init(v)
-    dynCount.value = self.count
+    dynCount.value = count
   }
   
   public override func bindTo(bond: Bond<Array<T>>) {
@@ -200,7 +200,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     return DynamicArrayGenerator<T>(array: self)
   }
   
-  private func dispatchWillInsert(indices: [Int]) {
+  func dispatchWillInsert(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.willInsertListener?(self, indices)
@@ -208,7 +208,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchDidInsert(indices: [Int]) {
+  func dispatchDidInsert(indices: [Int]) {
     if !indices.isEmpty {
       dynCount.value = count
     }
@@ -219,7 +219,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchWillRemove(indices: [Int]) {
+  func dispatchWillRemove(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.willRemoveListener?(self, indices)
@@ -227,7 +227,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
 
-  private func dispatchDidRemove(indices: [Int]) {
+  func dispatchDidRemove(indices: [Int]) {
     if !indices.isEmpty {
       dynCount.value = count
     }
@@ -238,7 +238,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchWillUpdate(indices: [Int]) {
+  func dispatchWillUpdate(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.willUpdateListener?(self, indices)
@@ -246,7 +246,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchDidUpdate(indices: [Int]) {
+  func dispatchDidUpdate(indices: [Int]) {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.didUpdateListener?(self, indices)
@@ -254,7 +254,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchWillPerformBatchUpdates() {
+  func dispatchWillPerformBatchUpdates() {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.willPerformBatchUpdatesListener?()
@@ -262,7 +262,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchDidPerformBatchUpdates() {
+  func dispatchDidPerformBatchUpdates() {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.didPerformBatchUpdatesListener?()
@@ -270,7 +270,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchWillReset() {
+  func dispatchWillReset() {
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
         arrayBond.willResetListener?(self)
@@ -278,7 +278,7 @@ public class DynamicArray<T>: Dynamic<Array<T>>, SequenceType {
     }
   }
   
-  private func dispatchDidReset() {
+  func dispatchDidReset() {
     dynCount.value = self.count
     for bondBox in bonds {
       if let arrayBond = bondBox.bond as? ArrayBond {
