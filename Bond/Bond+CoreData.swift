@@ -50,6 +50,10 @@ public class FetchedResultsArray<T> : DynamicArray<T> {
     }
   }
   
+  deinit {
+    frc.delegate = nil // frc.delegate is unowned, important to set to nil
+  }
+  
   public func reloadData() {
     if frc.fetchedObjects == nil {
       frcDelegate.nextDelegate = frc.delegate
@@ -59,6 +63,7 @@ public class FetchedResultsArray<T> : DynamicArray<T> {
       if !frc.performFetch(&error) {
         println("***** Error fetching \(frc.fetchRequest) \(error) *****")
       }
+      dynCount.value = count
       dispatchDidReset()
     } else {
       // TODO: no-op for now, consider niling out frc and refetch completely
