@@ -39,11 +39,16 @@ extension NSFetchedResultsController {
 public class FetchedResultsArray<T> : DynamicArray<T> {
   
   let frcDelegate = FetchedResultsControllerDynamicDelegate()
-  public var frc: NSFetchedResultsController
+  public let frc: NSFetchedResultsController
+  public let predicateBond = Bond<NSPredicate>()
   
   public init(frc: NSFetchedResultsController, type: T.Type, loadData: Bool = true) {
     self.frc = frc
     super.init(Array<T>())
+    predicateBond.listener = { [weak self] predicate in
+      self?.frc.fetchRequest.predicate = predicate
+      self?.reloadData()
+    }
     frcDelegate.dispatcher = self
     frcDelegate.nextDelegate = frc.delegate
     frc.delegate = frcDelegate
