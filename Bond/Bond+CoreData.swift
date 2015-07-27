@@ -39,12 +39,14 @@ extension NSFetchedResultsController {
 public class FetchedResultsArray<T> : DynamicArray<T> {
   
   let frcDelegate = FetchedResultsControllerDynamicDelegate()
-  var frc: NSFetchedResultsController
+  public var frc: NSFetchedResultsController
   
   public init(frc: NSFetchedResultsController, type: T.Type, loadData: Bool = true) {
     self.frc = frc
     super.init(Array<T>())
     frcDelegate.dispatcher = self
+    frcDelegate.nextDelegate = frc.delegate
+    frc.delegate = frcDelegate
     if loadData {
       reloadData()
     }
@@ -54,20 +56,16 @@ public class FetchedResultsArray<T> : DynamicArray<T> {
     frc.delegate = nil // frc.delegate is unowned, important to set to nil
   }
   
+  /// Invoke performFetch through FetchedResultsArray instead of frc to get change notifications
   public func reloadData() {
-    if frc.fetchedObjects == nil {
-      frcDelegate.nextDelegate = frc.delegate
-      frc.delegate = frcDelegate
-      var error: NSError?
-      dispatchWillReset()
-      if !frc.performFetch(&error) {
-        println("***** Error fetching \(frc.fetchRequest) \(error) *****")
-      }
-      dynCount.value = count
-      dispatchDidReset()
-    } else {
-      // TODO: no-op for now, consider niling out frc and refetch completely
+    var error: NSError?
+    dispatchWillReset()
+    NSFetchedResultsController.deleteCacheWithName(frc.cacheName)
+    if !frc.performFetch(&error) {
+      println("***** Error fetching \(frc.fetchRequest) \(error) *****")
     }
+    dynCount.value = count
+    dispatchDidReset()
   }
   
   // For some reason this private helper is needed to avoid crash
@@ -190,8 +188,6 @@ extension FetchedResultsControllerDynamicDelegate : NSFetchedResultsControllerDe
     dispatcher?.dispatchDidChangeCount(controller.fetchedObjects?.count ?? 0)
     dispatcher?.dispatchDidPerformBatchUpdates()
     nextDelegate?.controllerDidChangeContent?(controller)
-    for (index, object) in enumerate(controller.fetchedObjects!) {
-    }
   }
 }
 
