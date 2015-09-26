@@ -30,6 +30,7 @@
 		900BFC1A1ADFCD63002B4B6E /* NSTextViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 900BFC191ADFCD63002B4B6E /* NSTextViewTests.swift */; };
 		DCA979741A83C3A200DD4A30 /* Bond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCA979691A83C3A100DD4A30 /* Bond.framework */; };
 		EA3E36B81B41702100559641 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
+		EA81AE241BB70F6B00F94006 /* CoreData+Bond.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA81AE231BB70F6B00F94006 /* CoreData+Bond.swift */; settings = {ASSET_TAGS = (); }; };
 		EAD8B2DD1B41AF4300995CE9 /* NSLayoutConstraintTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */; };
 		EC0075B31B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; settings = {ASSET_TAGS = (); }; };
 		EC0075B41B90D39500249C31 /* EventProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC0075B21B90D39500249C31 /* EventProducer.swift */; settings = {ASSET_TAGS = (); }; };
@@ -187,6 +188,7 @@
 		DCA979691A83C3A100DD4A30 /* Bond.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Bond.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCA979731A83C3A200DD4A30 /* BondOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BondOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA3E36B71B41702100559641 /* NSLayoutConstraintTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSLayoutConstraintTests.swift; sourceTree = "<group>"; };
+		EA81AE231BB70F6B00F94006 /* CoreData+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreData+Bond.swift"; sourceTree = "<group>"; };
 		EC0075B21B90D39500249C31 /* EventProducer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventProducer.swift; sourceTree = "<group>"; };
 		EC2AE4A81B788F8B00296781 /* UIRefreshControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIRefreshControl+Bond.swift"; sourceTree = "<group>"; };
 		EC3228A91B9F5673002BE73A /* UISegmentedControl+Bond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+Bond.swift"; sourceTree = "<group>"; };
@@ -484,6 +486,7 @@
 				ECAD68D81B77BB1D00837A36 /* UITextField+Bond.swift */,
 				ECAD68D91B77BB1D00837A36 /* UITextView+Bond.swift */,
 				ECAD68DA1B77BB1D00837A36 /* UIView+Bond.swift */,
+				EA81AE231BB70F6B00F94006 /* CoreData+Bond.swift */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -782,6 +785,7 @@
 				EC0075B91B90E4DC00249C31 /* NSObject+Bond.swift in Sources */,
 				ECAD68EB1B77BB1D00837A36 /* BindableType.swift in Sources */,
 				EC0075B51B90D73800249C31 /* NSLock+Bond.swift in Sources */,
+				EA81AE241BB70F6B00F94006 /* CoreData+Bond.swift in Sources */,
 				ECAD69031B77BB1D00837A36 /* Queue.swift in Sources */,
 				EC0075D31B90E5F400249C31 /* UICollectionView+Bond.swift in Sources */,
 				EC0075DE1B90E5F400249C31 /* UITextView+Bond.swift in Sources */,
